@@ -5,7 +5,6 @@ body {
   /* background-attachment: fixed; Keep the background fixed when scrolling */
 
   background: #222831;
-  background: -webkit-linear-gradient(to left, #f05454, #222831);
   min-height: 100vh;
   color: #dddddd;
 }
