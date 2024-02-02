@@ -1,4 +1,4 @@
-export const host = "http://localhost:5000";
+export const host = "https://nyaymitra.onrender.com";
 export const userLoginRoute = `${host}/api/auth/user/login`;
 export const lawyerLoginRoute = `${host}/api/auth/lawyer/login`;
 export const userRegisterRoute = `${host}/api/auth/user/register`;
