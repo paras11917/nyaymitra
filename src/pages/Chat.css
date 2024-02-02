@@ -1,0 +1,276 @@
+
+.main-name-div-heading {
+    text-align: center; /* Center-align the text */
+    background-color: #333; /* Background color */
+    color: #fff; /* Text color */
+    padding: 10px; /* Add some padding around the text */
+  }
+  
+  .main-name-div-heading h1 {
+    font-size: 24px;
+  }
+  .main-name-div-heading h1 b {
+    color: #207bdd; }
+  
+.chat-container {
+    display: flex;
+    width: 100vw; /* Use 100% of the viewport width */
+    height: 85vh; /* Use 100% of the viewport height */
+    background-color: #f0f0f0;
+    margin: 0; /* Remove any margin */
+    padding: 0; /* Remove any padding */
+  }
+  
+  /* Styles for the connected people list */
+  .connected-people {
+    flex: 1;
+    background-color: white;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+    padding: 0; /* Remove padding */
+  }
+  
+  .connected-people h2 {
+    font-size: 18px;
+    margin: 0;
+    padding: 10px; /* Add some padding to the heading */
+  }
+  
+  .connected-people ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .connected-people li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin: 10px;
+    background-color: #D9D9D9;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Add some padding for spacing */
+  }
+  
+  .user-info-display-picture {
+    margin-right: 10px;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Creates a circular shape for the avatar */
+    overflow: hidden; /* Hides any content that exceeds the circle */
+  }
+  
+  .user-name {
+    font-weight: bold; /* Make the user's name bold */
+  }
+  
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Creates a circular shape */
+    overflow: hidden; /* Hides any content that exceeds the circle */
+  }
+  
+  .user-name {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .message-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 18px;
+    cursor: pointer;
+  }
+  
+  .message-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styles for the chat section */
+  .chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #DCE0EC;
+    padding: 0; /* Remove padding */
+    overflow-y: auto;
+  } 
+  /* Add this CSS to your Chat.css file */
+
+
+ /* Styles for the call buttons */
+.call-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .call-button.circular {
+    width: 40px;
+    height: 40px;
+    background-color: #007bff;
+    border: solid #031d38 3px;
+    color: rgb(244, 238, 238);
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+  
+  /* Update the CSS to move the buttons to the right */
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    background-color: #d7def9;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .user-avatar-chat {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden; /* Ensures the image is clipped to the circular shape */
+  }
+  
+  .user-connected-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .user-name-chat {
+    color: #000000;
+  }
+  
+  
+  .call-buttons {
+    margin-left: auto;
+  }
+  
+  .call-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .circular:hover {
+    background-color: #b5cae0;
+    color: rgb(18, 1, 1);
+    border:  2px solid #007bff;
+  }
+  
+  .chat-messages {
+    flex-grow: 1;
+    padding: 10px; /* Add some padding */
+    overflow-y: auto;
+  }
+  
+  .message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    max-width: 70%; /* Limit the maximum width of messages */
+  }
+  
+  .sent {
+    background-color: #ffffff;
+    color: black;
+    align-self: flex-end; /* Place sent messages on the right */
+  }
+  
+  .received {
+    background-color: #a2b1ea;
+    color: #000000;
+    align-self: flex-start; /* Place received messages on the left */
+  }
+  
+  
+  /* Chat.css */
+
+/* ... (previous styles) ... */
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    left: 60%;
+    border-radius: 5px;
+    padding: 10px; /* Add some padding */
+    justify-content: flex-end; /* Align input and button to the right */
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 0 5px 5px 0; /* Adjust border radius */
+    margin-right: 5px; /* Add a small margin between input and button */
+}
+
+.doc-button {
+    background-color: #4caf50; /* Green background color */
+    color: white; /* White text color */
+    border: none; /* Remove borders */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  .doc-button:hover {
+    background-color: #45a049; /* Darker green background color on hover */
+  }
+.send-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px; /* Adjust border radius */
+    margin-left: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+  
+  .send-button:hover {
+    background-color: #0056b3;
+  }
+/* CSS */
+.footer-button-to-go-back {
+    width: 40%;
+    height: 5%;
+    background-color: #3D63EA; /* Button background color */
+    color: white; /* Text color */
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    justify-content: center;
+    cursor: pointer;
+    position: fixed;
+    font-weight: bold;
+    bottom: 20px; 
+    right: 50%;
+    transform: translateX(50%); 
+    z-index: 999;
+}
+
+.footer-button-to-go-back:hover {
+    background-color: #2a4aaf;
+}

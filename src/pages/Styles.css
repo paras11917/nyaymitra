@@ -1,0 +1,142 @@
+/* styles.css */
+.custom-page-title {
+  font-size: 36px; /* Increase the font size for the page title */
+  font-weight: bold;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+/* Style for post containers */
+.custom-post-container {
+  width: 75vw; /* 75% of viewport width */
+  height: 75vh; /* 75% of viewport height */
+  /* margin: 0 auto; Center the post container horizontally */
+  padding: 20px; /* Increase padding for better spacing */
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  background-color: rgba(150, 150, 150, 0.288);
+}
+
+
+
+/* Style for the parent container */
+.container {
+  text-align: center;
+  padding: 20px;
+  margin-left: 20px; /* Adjust the left margin to create space */
+  margin-right: 20px; /* Adjust the right margin to create space */
+}
+
+/* Style for the post title */
+.form-group label[for="postTitle"] {
+  font-size: 24px; /* Increase the font size for the post title label */
+}
+
+/* Style for the post description label */
+.form-group label[for="postDescription"] {
+  font-size: 20px; /* Increase the font size for the post description label */
+}
+
+/* Style for the post title input */
+.form-group input#postTitle {
+  font-size: 24px; /* Increase the font size for the post title input */
+  width: 100%; /* Make the input full width */
+}
+
+/* Style for the post description textarea */
+.form-group textarea#postDescription {
+  font-size: 18px; /* Increase the font size for the post description textarea */
+  width: 100%; /* Make the textarea full width */
+}
+
+/* Style for the user name */
+.custom-user-name {
+  font-family: Inter;
+  font-size: 50px;
+  font-weight: bold;
+  line-height: 1.2; /* Increase line height for better readability */
+  letter-spacing: 0.02em; /* Add a slight letter-spacing for aesthetics */
+  text-align: center;
+  color: #121213; /* Change the font color to match your theme */
+  margin-bottom: 20px; /* Adjust the margin as needed */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle text shadow for depth */
+}
+
+/* Style for the user designation */
+.custom-user-designation {
+  font-family: Inter;
+  font-size: 16px; /* Use the same font size as the user name */
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: center;
+  font-weight: bolder;
+  color: #718096; /* Use the background color as the text color for the user designation */
+}
+
+/* Style for the user image */
+.custom-user-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+  margin-bottom: 5px; /* Add margin to create space between the image and text */
+}
+
+/* Style for the custom buttons */
+.custom-custom-button {
+  width: 245px;
+  height: 70px;
+  border: none;
+  background: #3d63ea;
+  cursor: pointer;
+  font-size: 18px;
+  color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  margin-right: 35px; /* Add margin to control the space between buttons */
+}
+
+.custom-button:hover {
+  background-color: #0056b3; /* Change to a darker shade on hover if desired */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Space between rows */
+  height: auto; /* Hug content height */
+  margin-bottom: 20px; /* Add spacing between rows if needed */
+}
+
+.custom-user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.decor-line {
+  width: 69px;
+  height: 5px;
+  background: linear-gradient(225deg, #f76680 0%, #57007b 100%);
+  margin: 0 auto; /* Center the line horizontally */
+}
+.form-group input#postTitle {
+  font-size: 24px; /* Increase the font size for the post title input */
+  width: 100%; /* Make the input full width */
+  padding: 10px; /* Add padding to the input for better spacing */
+  border: 1px solid #ddd; /* Add a border */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  margin-bottom: 20px; /* Add margin to create space between the input and textarea */
+}
+
+/* Style for the post description textarea */
+.form-group textarea#postDescription {
+  font-size: 18px; /* Increase the font size for the post description textarea */
+  width: 100%; /* Make the textarea full width */
+  padding: 10px; /* Add padding to the textarea for better spacing */
+  border: 1px solid #ddd; /* Add a border */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  margin-bottom: 20px; /* Add margin to create space below the textarea */
+}

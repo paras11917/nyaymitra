@@ -1,0 +1,97 @@
+/* styles.css */
+
+/* Style for post containers */
+.post-container {
+  border: 1px solid #30475e;
+  box-sizing: border-box;
+  display: flex;
+  vertical-align: top;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+/* Style for the parent container */
+.community-page {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  margin-left: 20px; /* Adjust the left margin to create space */
+  margin-right: 20px; /* Adjust the right margin to create space */
+}
+
+/* Style for the title */
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+.button-container {
+  display: flex;
+  /* justify-content: space-around; */
+  justify-content: center;
+  width: 100%;
+  padding: 0 30px; /* Adjust the padding as needed */
+}
+
+/* Style for the custom buttons */
+.custom-button {
+  width: 245px;
+  height: 70px;
+  border: none;
+  background: #3d63ea;
+  cursor: pointer;
+  font-size: 18px;
+  color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  margin-right: 35px; /* Add margin to control the space between buttons */
+}
+
+.custom-button:hover {
+  background-color: #0056b3; /* Change to a darker shade on hover if desired */
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Space between rows */
+  height: auto; /* Hug content height */
+  margin-bottom: 20px; /* Add spacing between rows if needed */
+}
+
+/* Style for the user name */
+.user-name {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Style for the user designation */
+.user-designation {
+  font-family: Inter;
+  font-size: 16px; /* Use the same font size as the user name */
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #718096; /* Use the background color as the text color for the user designation */
+}
+
+/* Style for the user image */
+.user-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.decor-line {
+  width: 69px;
+  height: 5px;
+  background: linear-gradient(225deg, #f76680 0%, #57007b 100%);
+  margin: 0 auto; /* Center the line horizontally */
+}
