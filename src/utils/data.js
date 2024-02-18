@@ -150,3 +150,4 @@ export const Lawyer = [
       "dob": "06/07/1980"
    }
 ]
+

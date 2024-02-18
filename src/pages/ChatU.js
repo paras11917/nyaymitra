@@ -11,12 +11,13 @@ import Peer from 'peerjs';
 
 import { CiImageOn } from "react-icons/ci";
 
-import Stars from './starRating';
+import Stars from '../components/starRating';
 
 import { BiSend } from "react-icons/bi";
 import Connect from './Connect';
+import ConnectPopup from '../components/ConnectPopup';
 
-const ChatU = () => {
+const ChatU = ({ lawyers, loggedInUser }) => {
    const myPeer = new Peer()
    // const navigate = useNavigate();
    const [videocallon, setVideocallon] = useState(false)
@@ -44,7 +45,7 @@ const ChatU = () => {
    const navigate = useNavigate();
    const [searchText, setSearchText] = useState('');
    const [selectedFile, setSelectedFile] = useState(null);
-   const [lawyers, setLawyers] = useState(null);
+   // const [lawyers, setLawyers] = useState(null);
    const [user, setUser] = useState(null);
    const [connectedLawyers, setConnectedLawyers] = useState([]);
 
@@ -61,21 +62,21 @@ const ChatU = () => {
       }
    }
 
-   useEffect(() => {
-      const fetchLawyers = async () => {
-         try {
-            const response = await axios.get(allLawyersRoute)
-            if (response) {
-               setLawyers(response.data)
-            }
-         } catch (err) {
-            console.log(err)
-         }
-      }
+   // useEffect(() => {
+   //    const fetchLawyers = async () => {
+   //       try {
+   //          const response = await axios.get(allLawyersRoute)
+   //          if (response) {
+   //             setLawyers(response.data)
+   //          }
+   //       } catch (err) {
+   //          console.log(err)
+   //       }
+   //    }
 
-      fetchUser()
-      fetchLawyers()
-   }, [])
+   //    fetchUser()
+   //    fetchLawyers()
+   // }, [])
 
    const handleSearchTextChange = (e) => {
       setSearchText(e.target.value);
@@ -90,8 +91,13 @@ const ChatU = () => {
       setSelectedFile(file);
    };
 
+   const [open ,setOpen] = useState(false)
+   const [connectLawyer, setConnectLawyer] = useState(false)
+
    const handleConnect = async (id) => {
       try {
+         setOpen(true)
+         setConnectLawyer(id)
          // const userID = await JSON.parse(localStorage.getItem("nayay"))._id;
          // const response = await axios.put(connectLawyerRoute, { userID, id })
          // if (response) {
@@ -278,33 +284,23 @@ const ChatU = () => {
    //   }
    // }
 
-   useEffect(() => {
-      const fetchLawyers = async () => {
-         try {
-            const response = await axios.get(allLawyersRoute)
-            if (response) {
-               setLawyers(response.data)
-            }
-         } catch (err) {
-            console.log(err)
-         }
-      }
+   // useEffect(() => {
+   //    const fetchLawyers = async () => {
+   //       try {
+   //          const response = await axios.get(allLawyersRoute)
+   //          if (response) {
+   //             setLawyers(response.data)
+   //          }
+   //       } catch (err) {
+   //          console.log(err)
+   //       }
+   //    }
 
-      fetchUser()
-      fetchLawyers()
-   }, [])
+   //    fetchUser()
+   //    fetchLawyers()
+   // }, [])
 
-   useEffect(() => {
-      if (!localStorage.getItem("nayay")) {
-         navigate("/login");
-      } else {
-         setCurrentUser(
-            JSON.parse(
-               localStorage.getItem("nayay")
-            )
-         );
-      }
-   }, []);
+   
 
    useEffect(() => {
       if (currentUser) {
@@ -448,69 +444,8 @@ const ChatU = () => {
    }
 
    return (
-      <div className='w-full flex pt-[80px]'>
-         <div className='flex flex-col gap-4 w-[30%] max-h-[100% - 72px] '>
-            <div className='flex gap-4 flex-col items-center '>
-               <div className='text-[24px] font-bold'>Search for Lawyers</div>
-               <div className="connect-form">
-                  <input
-                     type="text"
-                     placeholder="Search by name..."
-                     value={searchText}
-                     onChange={handleSearchTextChange}
-                  />
-               </div>
-
-               <div className="connect-form">
-                  <div className='p-3 bg-[#F05454] flex justify-center items-center text-[20px] rounded-lg'>
-                     Upload Your Document
-                  </div>
-                  <input
-                     type="file"
-                     accept=".pdf, .doc, .docx"
-                     onChange={handleFileUpload}
-                     hidden
-                  />
-               </div>
-            </div>
-            <div className='h-[500px] flex flex-col gap-3 overflow-y-auto no-scrollbar px-4'>
-               {lawyers?.filter(l => l.bio.includes(searchText) || l.name.includes(searchText) || l.fields.includes(searchText) || l.tags.includes(searchText))
-                  .map((lawyer, index) => (
-                     // <div className="lawyer-card" >
-                     //    <div className="lawyer-details">
-                     //       {/* <img src={lawyer.image} alt={lawyer.name} /> */}
-                     //       <h2>{lawyer.name}</h2>
-                     //       <p>
-                     //          <Stars rating={lawyer.rating} />
-                     //       </p>
-                     //    </div>
-                     //    <p className="lawyer-bio">{lawyer.bio}</p>
-                     //    <button
-                     //       className={connectedLawyers.includes(lawyer.name) ? "connected-button" : "connect-button"}
-                     //       onClick={() => handleConnect(lawyer._id)}
-                     //    >
-                     //       {user?.lawyers.includes(lawyer._id) ? "Connected" : "Connect"}
-                     //    </button>
-
-
-                     <div key={index} className='flex  flex-col rounded-[12px] gap-2 p-3 w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-xl' >
-                        <div className="flex justify-between items-center">
-                           <div className="w-[50px] h-[50px] object-cover rounded-full mr-4">
-                              <img src={require("../images/download.png")} alt={'#'} className="w-full h-full rounded-full" />
-                           </div>
-                           <div className="text-[24px]">{lawyer.name}</div>
-                           <p>
-                              <Stars rating={lawyer.rating} />
-                           </p>
-                        </div>
-                        <p className="lawyer-bio">{lawyer.bio}</p>
-                        <div className="bg-[#F05454] text-[20px] text-center rounded-[12px] py-2" onClick={() => handleConnect(lawyer._id)}>
-                           {user?.lawyers.includes(lawyer._id) ? "Connected" : "Connect"}
-                        </div>
-                     </div>
-                  ))}
-            </div>
-         </div>
+      <div className='w-full flex h-full'>
+         
 
 
          <div className=" w-[50%] backdrop-blur-xl px-2 z-[-2]">
@@ -540,38 +475,38 @@ const ChatU = () => {
 
                   {/* Chat Messages */}
                   {/* <form onSubmit={e => sendChat(e)}> */}
-                          <div className='overflow-y-auto max-h-full'>
-              <div className="flex flex-col gap-3 h-full">
-                <div className={` w-fit max-w-[200px] self-start received rounded-[12px] p-1 bg-[#30475E]`}
-                     >sgno dkgsns sgnasgk snglsdng </div>
-                     <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`} >sgno dkgsns sgnasgk snglsdng </div>
-                     <div className={`message w-fit max-w-[200px] received self-start rounded-[12px] p-1 bg-[#30475E]`}>sgno dkgsns sgnasgk snglsdng </div>
-                     <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`}>sgno dkgsns sgnasgk snglsdng </div>
-                     <div className={`message w-fit max-w-[200px] received self-start rounded-[12px] p-1 bg-[#30475E]`}>sgno dkgsns sgnasgk snglsdng </div>
-                     <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`}>sgno dkgsns sgnasgk snglsdng </div>
-                     <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1  bg-[#F05454]`}>sgno dkgsns sgnasgk snglsdng </div>
-                     {/* <div className={`message w-fit max-w-[200px] received self-start rounded-[12px] p-1 bg-[#30475E]`}>sgno dkgsns sgnasgk snglsdng </div>
+                  <div className='overflow-y-auto max-h-full'>
+                     <div className="flex flex-col gap-3 h-full">
+                        <div className={` w-fit max-w-[200px] self-start received rounded-[12px] p-1 bg-[#30475E]`}
+                        >sgno dkgsns sgnasgk snglsdng </div>
+                        <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`} >sgno dkgsns sgnasgk snglsdng </div>
+                        <div className={`message w-fit max-w-[200px] received self-start rounded-[12px] p-1 bg-[#30475E]`}>sgno dkgsns sgnasgk snglsdng </div>
+                        <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`}>sgno dkgsns sgnasgk snglsdng </div>
+                        <div className={`message w-fit max-w-[200px] received self-start rounded-[12px] p-1 bg-[#30475E]`}>sgno dkgsns sgnasgk snglsdng </div>
+                        <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`}>sgno dkgsns sgnasgk snglsdng </div>
+                        <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1  bg-[#F05454]`}>sgno dkgsns sgnasgk snglsdng </div>
+                        {/* <div className={`message w-fit max-w-[200px] received self-start rounded-[12px] p-1 bg-[#30475E]`}>sgno dkgsns sgnasgk snglsdng </div>
                      <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`}>sgno dkgsns sgnasgk snglsdng </div> */}
 
-                     {messages?.map((message, index) => (
-                        <div
-                           key={index}
-                           className={`message w-fit rounded-[12px] p-2 px-3 max-w-[200px]  text-end ${message.fromSelf ? 'sent self-end bg-[#F05454]' : 'received bg-[#30475E]'}`}
-                        >
-                           {message.file ?
-                              <>
-                                 <a download={`nayaymitra.${message.type}`} href={message.file}>download</a>
-                                 {message.type === "png" ?
-                                    <img className='h-20 w-20' src={message.file} alt='p' /> :
-                                    <embed className='h-20 w-20' src={message.file} />
-                                 }
-                              </>
+                        {messages?.map((message, index) => (
+                           <div
+                              key={index}
+                              className={`message w-fit rounded-[12px] p-2 px-3 max-w-[200px]  text-end ${message.fromSelf ? 'sent self-end bg-[#F05454]' : 'received bg-[#30475E]'}`}
+                           >
+                              {message.file ?
+                                 <>
+                                    <a download={`nayaymitra.${message.type}`} href={message.file}>download</a>
+                                    {message.type === "png" ?
+                                       <img className='h-20 w-20' src={message.file} alt='p' /> :
+                                       <embed className='h-20 w-20' src={message.file} />
+                                    }
+                                 </>
 
-                              : message.message}
-                        </div>
-                     ))}
-                  </div>
+                                 : message.message}
+                           </div>
+                        ))}
                      </div>
+                  </div>
                   {/* Chat Input */}
                   <div className="flex justify-between p-2">
                      <input
@@ -626,6 +561,10 @@ const ChatU = () => {
             </div>
 
          </div>
+
+
+         <ConnectPopup open={open} connectLawyer={connectLawyer} />
+
       </div>
    );
 };

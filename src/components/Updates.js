@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import newsData from "../pages/newsData"
+import newsData from "../utils/newsData"
 import UpdateCard from './UpdateCard'
 import { FaArrowCircleDown } from "react-icons/fa";
 
@@ -13,7 +13,7 @@ const Updates = () => {
       <div className='flex w-full flex-col pt-[100px]'>
          <div className='flex flex-col items-center'>
             <div className="w-[69px] h-[5px]" style={{ background: 'linear-gradient(225deg, #F76680 0%, #57007B 100%)' }}> </div>
-            <div className='text-[35px] leading-[55px] text-center'>
+            <div className='page-title text-center'>
                Updates<br /> Your Daily Legal News Feed
             </div>
          </div>

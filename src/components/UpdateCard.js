@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 const UpdateCard = ({ news }) => {
    const [more, setMore] = useState(false)
    return (
-      <div className='flex flex-row w-[80%] bg-[#30475E] rounded-[10px]'>
-         <div className='w-[300px] '>
+      <div className='flex flex-col md:flex-row  w-[80%] bg-[#30475E] rounded-[10px]'>
+         <div className='w-full sm:w-[300px] '>
             <img className="h-full w-full" src={require("../images/Case-study__image.png")} alt='img' />
          </div>
-         <div className='p-[20px] w-[70%]  rounded-r-[30px]'>
+         <div className='p-[20px]  sm:w-[70%]  rounded-r-[30px]'>
             <div className='text-[28px] font-[600] leading-[38px]  mr-[27px] mb-[20px]'>
                {news.title}
 

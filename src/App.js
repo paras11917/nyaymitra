@@ -4,15 +4,11 @@ import './pages/Style.css'
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Navigation from "./pages/Navigation";
+import Navigation from "./components/Navigation";
 import Updates from "./components/Updates";
 // import Post from "./pages/Post";
 import UserPage from "./pages/UserPage";
 import LawyerPage from "./pages/LawyerPage";
-import UserLogin from "./pages/UserLogin";
-import UserRegister from "./pages/UserRegister";
-import LawyerLogin from "./pages/LawyerLogin";
-import LawyerRegister from "./pages/LawyerRegister";
 import Chat from "./pages/ChatL";
 import Chatbot from "./pages/Chatbot";
 import Connect from "./pages/Connect";
@@ -21,29 +17,31 @@ import ChatU from "./pages/ChatU";
 import CaseStatusTracking from "./components/CaseStatusTracking";
 import Community from "./pages/Community";
 import Footer from './components/Footer';
+import { Activate } from './pages/Activate';
+import Profile from './pages/Profile';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 // import PostPage from "./pages/PostPage";
 
 function App() {
   return (
-      <BrowserRouter>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/updates" element={<Updates />} />
-           <Route path="user/login" element={<UserLogin />} />
-          <Route path="user/register" element={<UserRegister />} />
-          <Route path="lawyer/login" element={<LawyerLogin />} />
-          <Route path="lawyer/register" element={<LawyerRegister />} />
-        {/* <Route path="/post" element={<PostPage />} />*/}
-          <Route path="/user/userpage" element={<UserPage />} />
-          <Route path="/lawyer/lawyerpage" element={<LawyerPage />} />
-           <Route path="/chatl" element={<ChatL />} />
-           <Route path="/chatu" element={<ChatU />} />
-           <Route path="/chatbot" element={<Chatbot />} />
-        <Route path="/connect" element={<ChatU />} />
-          <Route path="/tracking" element={<CaseStatusTracking />} />
-          <Route path="/community" element={<Community />} />  
-      </Routes> 
+    <BrowserRouter>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/auth/account/activate/:token" element={<Activate />} />
+        <Route path="/updates" element={<Updates />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/connect" element={<Connect />} />
+        <Route path="/nyayai" element={<Chatbot />} />
+
+        <Route path="/chatl" element={<ChatL />} />
+        <Route path="/chatu" element={<ChatU />} />
+        <Route path="/tracking" element={<CaseStatusTracking />} />
+      </Routes>
       <ul className="circles">
         <li></li>
         <li></li>
@@ -55,8 +53,18 @@ function App() {
         <li></li>
         <li></li>
         <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
       </ul>
-      </BrowserRouter>
+    </BrowserRouter>
   );
 }
 

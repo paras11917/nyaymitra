@@ -11,7 +11,7 @@ import Peer from 'peerjs';
 import { BiSend } from "react-icons/bi";
 
 
-const ChatL = () => {
+const ChatL = ({ users, loggedInUser }) => {
 
   const navigate = useNavigate();
   const myPeer = new Peer()
@@ -29,7 +29,7 @@ const ChatL = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [selectedChat, setSelectedChat] = useState(null);
   const [input, setInput] = useState('');
-  const [users, setUsers] = useState(null);
+  // const [users, setUsers] = useState(null);
   const [lawyer, setLawyer] = useState(null)
   const videoRef = useRef();
   const [stream, setStream] = useState(null);
@@ -205,33 +205,23 @@ const ChatL = () => {
     }
   }
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(allUsersRoute)
-        if (response) {
-          setUsers(response.data)
-          console.log(response.data)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetchUsers()
-    fetchLawyer()
-  }, [])
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get(allUsersRoute)
+  //       if (response) {
+  //         setUsers(response.data)
+  //         console.log(response.data)
+  //       }
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
+  //   fetchUsers()
+  //   fetchLawyer()
+  // }, [])
 
-  useEffect(() => {
-    if (!localStorage.getItem("nayay")) {
-      navigate("/login");
-    } else {
-      setCurrentUser(
-        JSON.parse(
-          localStorage.getItem("nayay")
-        )
-      );
-    }
-  }, []);
+
 
   useEffect(() => {
     if (currentUser) {
@@ -374,11 +364,11 @@ const ChatL = () => {
   }
 
   return (
-    <div className='flex w-full pt-[80px] max-h-[100vh]'>
+    <div className='flex w-full max-h-full'>
       <div className="flex flex-col items-center w-[30%] overflow-y-scroll no-scrollbar max-h-full pb-2">
         <div className='text-[28px] font-bold mb-4'>Connected Users</div>
         <div className='flex flex-col gap-4 h-full w-full  px-5 z-[-3]'>
-          {users?.filter(user => lawyer?.users.includes(user._id)).map((person) => (
+          {users?.filter(user => loggedInUser?.users?.includes(user._id)).map((person) => (
             <div className='flex  justify-between items-center rounded-[12px] p-3 w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-xl' key={person.id}>
               <div className="flex  items-center">
                 <div className="w-[50px] h-[50px] object-cover rounded-full mr-4">

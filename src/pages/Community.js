@@ -35,7 +35,7 @@ function Community() {
         Community<br />
         Building Trust Together
       </h2>
-      <div className='flex flex-col gap-2 items-center justify-between w-[50%] z-[-2]'>
+      <div className='flex flex-col gap-2 items-center justify-between w-full sm:w-[50%] z-[-2]'>
         <div className='rounded-[12px] shadow-[0_3px_10px_rgb(0,0,0,0.2)]  backdrop-blur-md gap-2 p-[10px] w-full'>
           <img className="user-image" src={require("../images/download.png")} alt="User 2" />
           {/* <div>{}</div> */}

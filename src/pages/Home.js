@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Hero } from '../components/Hero'
-import Navigation from './Navigation'
+import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Updates from '../components/Updates'
 import CaseStatusTracking from '../components/CaseStatusTracking'
@@ -10,10 +10,10 @@ import HomeUpdate from '../components/HomeUpdate'
 const Home = () => {
    return (
       <div className=''>
-         
+
          <Hero />
          <HomeUpdate />
-         <CaseStatusTracking />
+         {/* <CaseStatusTracking /> */}
          <Footer />
          {/* <Link to={'user/login'} >UserLogin</Link>
          <Link to={'user/register'} >UserRegister</Link>

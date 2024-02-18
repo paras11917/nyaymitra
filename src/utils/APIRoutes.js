@@ -1,12 +1,15 @@
-export const host = "https://nyaymitra.onrender.com";
-export const userLoginRoute = `${host}/api/auth/user/login`;
-export const lawyerLoginRoute = `${host}/api/auth/lawyer/login`;
-export const userRegisterRoute = `${host}/api/auth/user/register`;
-export const lawyerRegisterRoute = `${host}/api/auth/lawyer/register`;
-export const logoutRoute = `${host}/api/auth/logout`;
+export const host = "http://localhost:5000";
+export const pyserver = "http://localhost:8000";
+export const signinRoute =    `${host}/api/auth/signin`;
+export const preSignupRoute = `${host}/api/auth/signup`;
+export const logoutRoute =    `${host}/api/auth/logout`;
+export const activateRoute =  `${host}/api/auth/activate`
+export const sendRequestRoute = `${host}/api/user/sendRequest`;
 export const allUsersRoute = `${host}/api/user/all`;
+export const connectLawyerRoute = `${host}/api/user/connectLawyer`
+export const recommandLawyerRoute = `${pyserver}/recommadlawyer`
+
 export const allLawyersRoute = `${host}/api/lawyer/all`;
-export const connectLawyerRoute = `${host}/api/user/connect`;
 export const getUserRoute = `${host}/api/user`;
 export const getLawyerRoute = `${host}/api/lawyer`;
 export const sendMessageRoute = `${host}/api/messages/addmsg`;
@@ -15,4 +18,3 @@ export const createPostRoute = `${host}/api/post/create`;
 export const getAllPostRoute = `${host}/api/post/all`;
 export const getPostRoute = `${host}/api/post`;
 export const photoRoute = `${host}/api/post/photo`;
-
