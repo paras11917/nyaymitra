@@ -18,7 +18,7 @@ const SignUp = () => {
       phone: "",
       date: "",
       password: "",
-      role: state.role ==="user" ? 0 : 1
+      role: state.role === "user" ? 0 : 1
    });
    const [set, setSet] = useState(false)
    const [same, setSame] = useState(true)
@@ -97,16 +97,16 @@ const SignUp = () => {
 
    return (
       <div className="flex items-center justify-between h-screen gap-3">
-         <div className="flex flex-col justify-center items-center w-[50%] "> 
+         <div className="flex flex-col justify-center items-center w-full sm:w-[50%] ">
             {
                state?.role === "user" ?
-               <UserRegister handleChange={(e) => handleChange(e)} handleSubmit={handleSubmit} values={values} message={message} loading={loading} same={same} />
-               : state?.role === "lawyer" ?
-               <LawyerRegister handleReset={handleReset} handleChange={handleChange} handleSubmit={handleSubmit} values={values} set={set} message={message} loading={loading} same={same} />
-               : <Navigate to="/" />
+                  <UserRegister handleChange={(e) => handleChange(e)} handleSubmit={handleSubmit} values={values} message={message} loading={loading} same={same} />
+                  : state?.role === "lawyer" ?
+                     <LawyerRegister handleReset={handleReset} handleChange={handleChange} handleSubmit={handleSubmit} values={values} set={set} message={message} loading={loading} same={same} />
+                     : <Navigate to="/" />
             }
          </div>
-         <div className="h-full top-[80px] right-0 fixed w-[50%] bg-[#F05454]">
+         <div className="h-full top-[80px] right-0 fixed w-[50%] bg-[#F05454] hidden sm:block ">
             <img className="h-full w-full" src={require("../images/8778033.png")} alt="hero" />
          </div>
       </div>

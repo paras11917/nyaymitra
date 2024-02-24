@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MessageLoading from "./MessageLoading";
 const LawyerRegister = ({handleChange,handleReset,handleSubmit,values,set,message,loading}) => {
    return (
-      <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-[70%] pt-12">
+      <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-full sm:w-[70%] pt-12">
          <div className="text-xl text-center mb-4">Lawyer Registration</div>
 
          <div className="flex flex-col gap-2">

@@ -68,19 +68,28 @@ const Navigation = () => {
                 <NavLink to={"/updates"} className={`${path === "/updates" ? "text-[#F05454] font-bold" : "text-[#dddddd]"} hover:text-[#F05454]   `}>News Feed</NavLink>
                 {/* <NavLink to={"/tracking"} className={`${path === "/tracking" ? "text-[#F05454] font-bold" : "text-[#dddddd]"} hover:text-[#F05454]   `}>Track</NavLink> */}
 
-                {isAuth() && <> <NavLink to={`/profile/${isAuth().username}`} className="text-[32px] "><IoPersonCircleSharp /> {isAuth().name} </NavLink>
+                {isAuth() && <>
                     <div className="text-[28px] relative"><IoIosNotifications />
                         {true && <div className="w-2 h-2 absolute top-0 right-0 bg-[#F05454] rounded-full"></div>}
                     </div>
                     <div className="text-[28px] relative"><RiMessage3Fill />
                         {true && <div className="w-2 h-2 absolute top-0 right-0 bg-[#F05454] rounded-full"></div>}
-                    </div></>}
+                    </div>
+                </>
+                }
 
             </div>
 
-         
-                {!isAuth() ? <Link to="/signin" className="h-10 bg-[#F05454] rounded-lg flex flex-col items-center justify-center px-2 " >Sign In</Link> : <button className="h-10 bg-[#F05454] rounded-lg px-2 " onClick={logout}>Logout</button>}
-          
+
+            {!isAuth() ?
+                    <Link to="/signin" className="h-10 bg-[#F05454] rounded-lg flex flex-col items-center justify-center px-2 " >Sign In</Link> :
+                <>
+                <NavLink to={`/profile/${isAuth().username}`} className="text-[20px] flex items-center gap-2"> <span className="text-[32px]"><IoPersonCircleSharp /></span> {isAuth().name} </NavLink>
+                    <button className="h-10 bg-[#F05454] rounded-lg px-2 " onClick={logout}>Logout</button>
+                
+                </>
+                }
+
             <div onClick={() => setOpen(!open)} className='text-[#F05454] cursor-pointer font-extrabold md:hidden text-[24px]'>{!open ? <GiHamburgerMenu /> : <RxCross1 />}</div>
 
 

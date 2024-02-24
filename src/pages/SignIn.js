@@ -14,7 +14,7 @@ const SignIn = () => {
       password: "",
    });
    const [loading, setLoading] = useState(false)
-   const [message,setMessage] = useState(null)
+   const [message, setMessage] = useState(null)
 
    useEffect(() => {
       const user = isAuth();
@@ -27,9 +27,9 @@ const SignIn = () => {
       setLoading(true)
       try {
          const { email, password } = values;
-         const response = await axios.post(signinRoute,values);
+         const response = await axios.post(signinRoute, values);
          setLoading(false)
-         if (response.status===200) {
+         if (response.status === 200) {
             console.log(response)
             localStorage.setItem("user", JSON.stringify(response.data.user));
             cookie.set("token", response.data.token)
@@ -50,8 +50,8 @@ const SignIn = () => {
    };
    return (
       <div className="flex items-center justify-between h-screen gap-3">
-         <div className="flex flex-col justify-center items-center w-[50%] ">
-            <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-[70%]">
+         <div className="flex flex-col justify-center items-center w-full sm:w-[50%] ">
+            <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-full sm:w-[70%]">
                <div className="text-xl text-center mb-4">User Login</div>
                <div className="flex flex-col">
                   <label className="text-sm mb-1" >Email</label>
@@ -76,10 +76,10 @@ const SignIn = () => {
                   />
                </div>
                <button className="h-10 bg-[#F05454] rounded-lg" onClick={handleSubmit}>UserLogin</button>
-               <MessageLoading  loading={loading} message={message} />             
+               <MessageLoading loading={loading} message={message} />
             </div>
          </div>
-         <div className="h-full top-[80px] right-0 fixed w-[50%] bg-[#F05454]">
+         <div className="h-full top-[80px] right-0 fixed w-[50%] bg-[#F05454] hidden sm:block ">
             <img className="h-full w-full" src={require("../images/8778033.png")} alt="hero" />
          </div>
       </div>

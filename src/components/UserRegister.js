@@ -7,7 +7,7 @@ import MessageLoading from "./MessageLoading";
 const UserRegister = ({ handleChange, handleSubmit, values, message,loading,same }) => {
    
    return (
-      <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-[70%]">
+      <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-full sm:w-[70%]">
          <div className="text-xl text-center mb-4">User Register</div>
          <div className="flex flex-col">
             <label className="text-sm mb-1" >Name</label>
