@@ -159,10 +159,11 @@ const Chat = ({ lawyers, loggedInUser }) => {
    useEffect(() => {
       peer.peer.addEventListener("track", async (ev) => {
          const remoteStream = ev.streams;
-         console.log("GOT TRACKS!!");
+         console.log("GOT TRACKS!!",remoteStream);
          setRemoteStream(remoteStream[0]);
       });
    }, []);
+
 
    useEffect(() => {
       // socket.on("user:joined", handleUserJoined);
