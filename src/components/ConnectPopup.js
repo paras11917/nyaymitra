@@ -1,45 +1,44 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import MessageLoading from './MessageLoading'
 import axios from 'axios';
 import { sendRequestRoute } from '../utils/APIRoutes';
-import { io } from 'socket.io-client';
-import { isAuth } from '../utils/Utils';
+import { RxCross2 } from "react-icons/rx";
+import { Context } from '../Context/Context';
 
-const ConnectPopup = ({ open, connectLawyer }) => {
-   const formData = new FormData()
+const ConnectPopup = ({ open, connectLawyer, setOpen }) => {
+   const { auth, socket, token } = useContext(Context)
    const [values, setValues] = useState({
       sub: "",
       desc: "",
+      lawyer: ""
    });
+   console.log(connectLawyer)
    const [loading, setLoading] = useState(false)
-   const socket = useRef();
 
-   const auth  = isAuth()
 
    const handleSubmit = async () => {
       setLoading(true)
       try {
-         socket.current.emit("send-request", {
+         socket.emit("request", {
             to: connectLawyer,
-            from: auth.id,
+            from: auth,
             message: values.sub
          });
 
-         const response = await axios.post(sendRequestRoute, formData);
+         const config = {
+            headers: { Authorization: `Bearer ${token}` }
+         };
+
+         values.lawyer = connectLawyer
+
+         const response = await axios.post(sendRequestRoute, values, config);
          if (response) {
             setLoading(false)
             console.log(response)
          }
       } catch (err) {
+         setLoading(false)
          console.log(err)
-      }
-   };
-
-   const handleChange = (event) => {
-      setValues({ ...values, [event.target.name]: event.target.value });
-      formData.set(event.target.name, event.target.value)
-      if (event.target.name === "fir") {
-         formData.set("fir",event.target.files[0])
       }
    };
 
@@ -48,6 +47,9 @@ const ConnectPopup = ({ open, connectLawyer }) => {
       <div className={`absolute flex-col justify-center items-center w-screen h-screen backdrop-blur-3xl ${open ? "flex" : "hidden"}`}>
          <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-[50%]">
             <div className="text-xl text-center mb-4">Send Connection Request</div>
+            <div className='absolute top-5 right-5 text-[24px]' onClick={setOpen}>
+               <RxCross2 />
+            </div>
             <div className="flex flex-col">
                <label className="text-sm mb-1" >Subject</label>
                <input
@@ -56,7 +58,7 @@ const ConnectPopup = ({ open, connectLawyer }) => {
                   placeholder="Subject"
                   name="sub"
                   value={values.sub}
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => setValues({ ...values, sub: e.target.value })}
                />
             </div>
             <div className="flex flex-col">
@@ -66,20 +68,7 @@ const ConnectPopup = ({ open, connectLawyer }) => {
                   placeholder="Description"
                   name="desc"
                   value={values.desc}
-                  onChange={(e) => handleChange(e)}
-               />
-            </div>
-            <div className="connect-form">
-               <div onClick={()=>document.getElementById("fir").click()} className='p-3 bg-[#F05454] flex justify-center items-center text-[20px] rounded-lg'>
-                  Upload Your Document
-               </div>
-               <input
-                  type="file"
-                  accept=".pdf, .doc, .docx, .txt"
-                  onChange={(e) => handleChange(e)}
-                  hidden
-                  name="fir"
-                  id="fir"
+                  onChange={(e) => setValues({ ...values, desc: e.target.value })}
                />
             </div>
             <button className="h-10 bg-[#F05454] rounded-lg" onClick={handleSubmit}>Send</button>

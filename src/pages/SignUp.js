@@ -97,7 +97,7 @@ const SignUp = () => {
 
    return (
       <div className="flex items-center justify-between h-screen gap-3">
-         <div className="flex flex-col justify-center items-center w-full sm:w-[50%] ">
+         <div className="flex flex-col justify-center items-center w-full md:w-[50%] ">
             {
                state?.role === "user" ?
                   <UserRegister handleChange={(e) => handleChange(e)} handleSubmit={handleSubmit} values={values} message={message} loading={loading} same={same} />
@@ -106,7 +106,7 @@ const SignUp = () => {
                      : <Navigate to="/" />
             }
          </div>
-         <div className="h-full top-[80px] right-0 fixed w-[50%] bg-[#F05454] hidden sm:block ">
+         <div className="h-full top-[80px] right-0 fixed w-[50%] bg-[#F05454] hidden md:block ">
             <img className="h-full w-full" src={require("../images/8778033.png")} alt="hero" />
          </div>
       </div>

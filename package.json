@@ -16,9 +16,11 @@
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.12.0",
     "react-loader-spinner": "^6.1.6",
+    "react-player": "^2.15.1",
     "react-router-dom": "^6.21.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
+    "react-toastify": "^10.0.4",
     "socket.io": "^4.7.3",
     "socket.io-client": "^4.7.3",
     "web-vitals": "^2.1.4"
