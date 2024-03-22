@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import peer from "../utils/Peer"
 import ReactPlayer from "react-player";
 import { CiImageOn } from "react-icons/ci";
+import { FaRupeeSign } from "react-icons/fa";
 
 import Stars from '../components/starRating';
 
@@ -20,6 +21,7 @@ import { FaPhone } from "react-icons/fa6";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { RxCross2 } from 'react-icons/rx';
 
 const Chat = ({ lawyers, loggedInUser }) => {
    const { socket, userData, allUsers, token, connections, auth, showToastMessage } = useContext(Context);
@@ -47,6 +49,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
    const videoRef = useRef();
    const [stream, setStream] = useState(null);
    const remoteVideoRef = useRef();
+   const [openPay, setOpenPay] = useState(false)
 
 
 
@@ -413,6 +416,10 @@ const Chat = ({ lawyers, loggedInUser }) => {
       // }
    }
 
+   const handleRequestPay = ()=>{
+
+   }
+
    return (
       <div className='w-full h-[100vh] flex pt-[80px]'>
 
@@ -451,6 +458,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
                         <div className='user-connected-name'><span className="user-name-chat">{currentChat?.name}</span></div>
                      </div>
                      <div className="call-buttons flex text-[24px] mr-[50px] gap-[20px]">
+                        <button onClick={()=>setOpenPay(true)}><FaRupeeSign/></button>
                         <button onClick={handleCallUser} className="call-button cursor-pointer circular"><FaVideo /></button>
                         <button onClick={() => { }} className="call-button circular"><FaPhone /></button>
                      </div>
@@ -541,6 +549,20 @@ const Chat = ({ lawyers, loggedInUser }) => {
                            />
                         </div>
                      )}
+                  </div>}
+
+                  {openPay && <div className={`absolute flex flex-col justify-center items-center w-screen h-screen top-0 right-0 backdrop-blur-3xl`}>
+                     <div className="flex flex-col p-10 rounded-2xl backdrop-blur-xl shadow-2xl gap-3 w-[50%]">
+                        <div className="text-xl text-center mb-4">Request Payment</div>
+                        <div className='absolute top-5 right-5 text-[24px]' onClick={() => setOpenPay(false)}>
+                           <RxCross2 />
+                        </div>
+                        <input type="text" placeholder='amount' />
+                        <input type="text" placeholder='currency' />
+                        <input type="text" placeholder='note' />
+
+                        <button className="h-10 bg-[#F05454] rounded-lg" onClick={handleRequestPay}>Request Payment</button>
+                     </div>
                   </div>}
                </div>
             ) :

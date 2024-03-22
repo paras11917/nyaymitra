@@ -68,7 +68,7 @@ export const Provider = (props) => {
    },[userData,allUsers])
 
    const getNews = useCallback(async () => {
-      // const response = await axios.get("https://newsapi.org/v2/top-headlines?country=in&apiKey=af3e8f8641d642e2b4ec973c47245b97")
+      // const response = await axios.get("https://newsapi.org/v2/top-headlines?country=in&apiKey=")
       // if (response.status === 200) {
       //    setNews(response.data.articles)
       // } else {
