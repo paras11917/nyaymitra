@@ -4,7 +4,6 @@ import axios from 'axios';
 import { allLawyersRoute, getConnectionsRoute, getUserRoute, host, recieveMessageRoute, sendMessageRoute } from '../utils/APIRoutes';
 import { useNavigate } from 'react-router';
 // import SimplePeer from 'simple-peer';
-import peer from "../utils/Peer"
 import ReactPlayer from "react-player";
 import { CiImageOn } from "react-icons/ci";
 import { FaRupeeSign } from "react-icons/fa";
@@ -18,12 +17,13 @@ import { Context, useSocket } from '../Context/Context';
 import { isAuth } from '../utils/Utils';
 import { FaVideo, FaImage, FaRegFilePdf } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa6";
-
+import usePeer from '../Context/Peer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RxCross2 } from 'react-icons/rx';
 
 const Chat = ({ lawyers, loggedInUser }) => {
+   const { peer, createOffer, createAnswer, closeConnection } = usePeer();
    const { socket, userData, allUsers, token, connections, auth, showToastMessage } = useContext(Context);
    const config = {
       headers: { Authorization: `Bearer ${token}` }
@@ -31,8 +31,6 @@ const Chat = ({ lawyers, loggedInUser }) => {
    const [currentChat, setCurrentChat] = useState(undefined);
    const [myStream, setMyStream] = useState()
    const [remoteStream, setRemoteStream] = useState();
-
-   // const navigate = useNavigate();
    const [videocallon, setVideocallon] = useState(false)
    const [loading, setLoading] = useState(false)
    const [prog, setProg] = useState("0")
@@ -50,9 +48,6 @@ const Chat = ({ lawyers, loggedInUser }) => {
    const [stream, setStream] = useState(null);
    const remoteVideoRef = useRef();
    const [openPay, setOpenPay] = useState(false)
-
-
-
    const navigate = useNavigate();
    const [searchText, setSearchText] = useState('');
    const [selectedFile, setSelectedFile] = useState(null);
@@ -66,41 +61,29 @@ const Chat = ({ lawyers, loggedInUser }) => {
    })
 
    useEffect(() => {
-      if (socket) {
-         socket.on("incomming:request", handleIncomingRequest)
-         socket.on("incomming:accept", handleIncomingAccept)
-      }
+      socket.emit("newUser", auth?._id);
+   })
 
-      return () => {
-         if (socket) {
-            socket.off("incoming:request", handleIncomingRequest);
-            socket.on("incomming:accept", handleIncomingAccept)
-         }
-      };
-
-   }, [socket])
-
-   const handleIncomingRequest = ({ from, message }) => {
+   const handleIncomingRequest = useCallback(({ from, message }) => {
       console.log(message, from.name);
       showToastMessage(`${message} from ${from.name}`)
-   };
-   const handleIncomingAccept = ({ from, message }) => {
+   },[showToastMessage])
+
+   const handleIncomingAccept = useCallback(({ from, message }) => {
       console.log(message, from.name);
       showToastMessage(`accepted from ${from.name}`)
-   };
-
-
+   }, [showToastMessage])
 
    const handleCallUser = useCallback(async () => {
       const stream = await navigator.mediaDevices.getUserMedia({
          audio: true,
          video: true,
       });
-      const offer = await peer.getOffer();
+      const offer = await peer.localDescription;
       socket.emit("user:call", { to: currentChat?._id, offer, from: userData._id });
       setMyStream(stream);
       setVideocallon(true)
-   }, [currentChat, socket, auth]);
+   }, [currentChat, socket, userData,peer]);
 
    const handleIncommingCall = useCallback(
       async ({ from, offer }) => {
@@ -111,25 +94,25 @@ const Chat = ({ lawyers, loggedInUser }) => {
          });
          setMyStream(stream);
          console.log(`Incoming Call`, from, offer);
-         const ans = await peer.getAnswer(offer);
+         const ans = await createAnswer(offer);
          socket.emit("call:accepted", { to: from, ans });
       },
-      [socket]
+      [createAnswer, socket]
    );
 
-   const sendStreams = useCallback(() => {
-      for (const track of myStream.getTracks()) {
-         peer.peer.addTrack(track, myStream);
-      }
-   }, [myStream]);
+   // const sendStreams = useCallback(() => {
+   //    for (const track of myStream.getTracks()) {
+   //       peer.peer.addTrack(track, myStream);
+   //    }
+   // }, [myStream, peer]);
 
    const handleCallAccepted = useCallback(
       ({ from, ans }) => {
-         peer.setLocalDescription(ans);
+         peer.setRemoteDescription(ans);
          console.log("Call Accepted!");
-         sendStreams();
+         // sendStreams();
       },
-      [sendStreams]
+      [peer]
    );
 
    const handleNegoNeeded = useCallback(async () => {
@@ -138,9 +121,9 @@ const Chat = ({ lawyers, loggedInUser }) => {
    }, [currentChat, socket]);
 
    useEffect(() => {
-      peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
+      peer.addEventListener("negotiationneeded", handleNegoNeeded);
       return () => {
-         peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
+         peer.removeEventListener("negotiationneeded", handleNegoNeeded);
       };
    }, [handleNegoNeeded]);
 
@@ -157,18 +140,19 @@ const Chat = ({ lawyers, loggedInUser }) => {
    }, []);
 
    useEffect(() => {
-      peer.peer.addEventListener("track", async (ev) => {
+      peer.addEventListener("track", async (ev) => {
          const remoteStream = ev.streams;
          console.log("GOT TRACKS!!");
          setRemoteStream(remoteStream[0]);
       });
    }, []);
 
-   console.log(myStream,remoteStream)
 
 
    useEffect(() => {
       // socket.on("user:joined", handleUserJoined);
+      socket.on("incomming:request", handleIncomingRequest)
+      socket.on("incomming:accept", handleIncomingAccept)
       socket.on("incomming:call", handleIncommingCall);
       socket.on("call:accepted", handleCallAccepted);
       socket.on("peer:nego:needed", handleNegoNeedIncomming);
@@ -176,6 +160,8 @@ const Chat = ({ lawyers, loggedInUser }) => {
 
       return () => {
          // socket.off("user:joined", handleUserJoined);
+         socket.off("incoming:request", handleIncomingRequest);
+         socket.on("incomming:accept", handleIncomingAccept)
          socket.off("incomming:call", handleIncommingCall);
          socket.off("call:accepted", handleCallAccepted);
          socket.off("peer:nego:needed", handleNegoNeedIncomming);
@@ -184,6 +170,8 @@ const Chat = ({ lawyers, loggedInUser }) => {
    }, [
       socket,
       // handleUserJoined,
+      handleIncomingRequest,
+      handleIncomingAccept,
       handleIncommingCall,
       handleCallAccepted,
       handleNegoNeedIncomming,
@@ -323,7 +311,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
 
    const fetchMessage = async () => {
       try {
-         const response = await axios.post(recieveMessageRoute, { currentChatId: currentChat._id }, config);
+         const response = await axios.post(recieveMessageRoute, { currentChatId: currentChat?._id }, config);
          setMessages(response.data);
          console.log(response.data)
       } catch (err) {
@@ -332,7 +320,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
    }
 
    useEffect(() => {
-      fetchMessage();
+      if(currentChat){fetchMessage();}
    }, [currentChat]);
 
 
@@ -422,6 +410,8 @@ const Chat = ({ lawyers, loggedInUser }) => {
    const handleRequestPay = ()=>{
 
    }
+
+   
 
    return (
       <div className='w-full h-[100vh] flex pt-[80px]'>
@@ -526,7 +516,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
                   </div>
 
                   {videocallon && <div className='h-screen w-screen absolute bg-slate-900 flex gap-3'>
-                     {myStream && <button onClick={sendStreams}>Send Stream</button>}
+                     {myStream && <button onClick={()=>{}}>Send Stream</button>}
                      {remoteStream && <button onClick={handleCallUser}>CALL</button>}
                      {myStream && (
                         <div className=''>

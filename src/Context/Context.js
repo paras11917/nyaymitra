@@ -18,7 +18,7 @@ export const Provider = (props) => {
    const [connections, setConnections] = useState([]);
    const [allUsers, setAllUsers] = useState()
    const [userData, setUser] = useState(null)
-   const [news,setNews]= useState()
+   const [news, setNews] = useState()
    const socket = useMemo(() => io(host), []);
    const auth = isAuth()
    const token = cookie.get('token')
@@ -27,7 +27,7 @@ export const Provider = (props) => {
    };
    useEffect(() => {
       socket.emit("newUser", auth?._id);
-   }, [auth, socket])
+   })
    const fetchAllUsers = useCallback(async () => {
       try {
          const response = await axios.get(allUsersRoute)
@@ -54,7 +54,7 @@ export const Provider = (props) => {
 
    useEffect(() => {
       fetchUser()
-   },[])
+   }, [])
 
    const filterUsers = useCallback(() => {
       if (allUsers) {
@@ -65,20 +65,20 @@ export const Provider = (props) => {
 
    useEffect(() => {
       setConnections(allUsers?.filter(user => userData?.connections?.includes(user._id)))
-   },[userData,allUsers])
+   }, [userData, allUsers])
 
    const getNews = useCallback(async () => {
       // const response = await axios.get("https://newsapi.org/v2/top-headlines?country=in&apiKey=")
       // if (response.status === 200) {
       //    setNews(response.data.articles)
       // } else {
-         setNews(newsData)
+      setNews(newsData)
       // }
    }, [])
-   
+
    useEffect(() => {
       getNews()
-   },[getNews])
+   }, [getNews])
 
    useEffect(() => {
       fetchAllUsers()

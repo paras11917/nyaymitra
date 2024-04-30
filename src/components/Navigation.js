@@ -58,7 +58,7 @@ const Navigation = () => {
 
     useEffect(() => {
         fetchRequests()
-    }, [])
+    }, [openNot])
 
     const handleOpenAccept = (r) => {
         setReqdata(r)
@@ -84,6 +84,7 @@ const Navigation = () => {
             const response = await axios.post(acceptRequestRoute, { userid: reqdata.sender._id ,reqid:reqdata._id}, config);
             if (response) {
                 setLoading(false)
+                setOpenAccept(false)
                 console.log(response)
             }
         } catch (err) {

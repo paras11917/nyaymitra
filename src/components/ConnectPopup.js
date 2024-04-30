@@ -12,7 +12,6 @@ const ConnectPopup = ({ open, connectLawyer, setOpen }) => {
       desc: "",
       lawyer: ""
    });
-   console.log(connectLawyer)
    const [loading, setLoading] = useState(false)
 
 
@@ -28,12 +27,14 @@ const ConnectPopup = ({ open, connectLawyer, setOpen }) => {
          const config = {
             headers: { Authorization: `Bearer ${token}` }
          };
+         console.log(token)
 
          values.lawyer = connectLawyer
 
          const response = await axios.post(sendRequestRoute, values, config);
          if (response) {
             setLoading(false)
+            setOpen(false)
             console.log(response)
          }
       } catch (err) {

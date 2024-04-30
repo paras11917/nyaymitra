@@ -18,11 +18,13 @@ import SignUp from './pages/SignUp';
 import { Provider } from './Context/Context';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PeerProvider } from './Context/Peer';
 
 function App() {
   return (
     <BrowserRouter>
       <Provider>
+        <PeerProvider>
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -61,7 +63,8 @@ function App() {
           <li></li>
           <li></li>
           <li></li>
-        </ul>
+          </ul>
+        </PeerProvider>
       </Provider>
     </BrowserRouter>
   );
