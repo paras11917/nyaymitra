@@ -1,6 +1,6 @@
 // export const host = "http://localhost:5000";
 export const host = "https://nyaymitra.onrender.com";
-export const pyserver = "https://c732-34-172-0-220.ngrok-free.app";
+export const pyserver = "https://nyaymitra-rec-server.onrender.com";
 export const signinRoute =    `${host}/api/auth/signin`;
 export const preSignupRoute = `${host}/api/auth/signup`;
 export const logoutRoute =    `${host}/api/auth/logout`;
