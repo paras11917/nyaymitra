@@ -74,7 +74,7 @@ const Chatbot = () => {
   const initializeAi = useCallback(async () => {
     const model = new HuggingFaceInference({
       model: "mistralai/Mixtral-8x7B-Instruct-v0.1", //mistralai/Mixtral-8x7B-Instruct-v0.1 //meta-llama/Meta-Llama-3-8B-Instruct
-      apiKey: process.env.REACT_APP_HUGGINGFACEHUB_API_KEY, // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
+      apiKey: process.env.HUGGINGFACEHUB_API_KEY, // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
       // maxTokens: 800,
       temperature: 0.7,
       topP: 0.9,
@@ -82,7 +82,7 @@ const Chatbot = () => {
 
     const embeddings = new HuggingFaceInferenceEmbeddings({
       model: "sentence-transformers/all-MiniLM-L6-v2",
-      apiKey: process.env.REACT_APP_HUGGINGFACEHUB_API_KEY,
+      apiKey: process.env.HUGGINGFACEHUB_API_KEY,
     });
     const vectorStore = await MemoryVectorStore.fromTexts(
       [firpdf],
