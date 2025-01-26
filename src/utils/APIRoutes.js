@@ -1,5 +1,5 @@
-export const host = "http://localhost:5000";
-// export const host = "https://nyaymitra.onrender.com";
+// export const host = "http://localhost:5000";
+export const host = "https://nyaymitra.onrender.com";
 export const pyserver = "https://nyaymitra-rec-server.onrender.com";
 export const recommandLawyerRoute = `${pyserver}/recommadlawyer`
 export const signinRoute =    `${host}/api/auth/signin`;
