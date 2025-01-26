@@ -16,7 +16,7 @@ import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import { Provider } from './Context/Context';
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PeerProvider } from './Context/Peer';
 
@@ -37,7 +37,6 @@ function App() {
           <Route path="/connect" element={<Connect />} />
           <Route path="/nyayai" element={<Chatbot />} />
           <Route path="/chat" element={<Chat />} />
-
           <Route path="/tracking" element={<CaseStatusTracking />} />
         </Routes>
         <ToastContainer />

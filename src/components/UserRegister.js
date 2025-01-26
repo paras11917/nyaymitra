@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
-import { RotatingLines } from "react-loader-spinner";
+import React from "react";
 import MessageLoading from "./MessageLoading";
 
 const UserRegister = ({ handleChange, handleSubmit, values, message,loading,same }) => {

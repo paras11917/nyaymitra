@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import MessageLoading from "./MessageLoading";
 const LawyerRegister = ({handleChange,handleReset,handleSubmit,values,set,message,loading}) => {
    return (
@@ -101,6 +101,7 @@ const LawyerRegister = ({handleChange,handleReset,handleSubmit,values,set,messag
 
 export default LawyerRegister
 
+// eslint-disable-next-line no-lone-blocks
 {/* <div className="flex flex-col">
                         <label className="text-sm mb-1" >Bio</label>
                         <textarea
@@ -139,9 +140,9 @@ export default LawyerRegister
                               setTag(selected)
                            }}
                         />
-                     </div> */}
-
-{/* <input
+                     </div> 
+                     
+               <input
                      type="password"
                      placeholder="OTP"
                      name="otp"

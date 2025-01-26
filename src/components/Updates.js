@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import UpdateCard from './UpdateCard'
 import { FaArrowCircleDown } from "react-icons/fa";
-import axios from 'axios';
 import { Context } from '../Context/Context';
 
 const Updates = () => {
    const [num, setNum] = useState(3)
    const {news} = useContext(Context)
    const more = () => {
-      if (num + 3 < news.length) setNum(num + 3)
-      else setNum(news.length)
+      if (num + 3 < news?.length) setNum(num + 3)
+      else setNum(news?.length)
    }
-
 
    return (
       <div className='flex w-full flex-col pt-[100px]'>
@@ -29,7 +27,7 @@ const Updates = () => {
 
             </div>
 
-            {num !== news.length && <div onClick={more} className=' items-center w-full flex flex-col mt-[38px] text-[50px] font-[600] leading-[27px] bg-clip-text text-[#F05454] '>
+            {num !== news?.length && <div onClick={more} className=' items-center w-full flex flex-col mt-[38px] text-[50px] font-[600] leading-[27px] bg-clip-text text-[#F05454] '>
                <FaArrowCircleDown />
             </div>}
          </div>

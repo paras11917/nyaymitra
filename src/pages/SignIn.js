@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signinRoute } from "../utils/APIRoutes";
 import cookie from "js-cookie"
 import MessageLoading from '../components/MessageLoading';
@@ -21,12 +20,11 @@ const SignIn = () => {
       if (user) {
          navigate(`/profile/${user.username}`)
       }
-   }, [])
+   }, [navigate])
 
    const handleSubmit = async () => {
       setLoading(true)
       try {
-         const { email, password } = values;
          const response = await axios.post(signinRoute, values);
          setLoading(false)
          if (response.status === 200) {
@@ -42,6 +40,8 @@ const SignIn = () => {
          }
       } catch (err) {
          console.log(err)
+      } finally {
+         setLoading(false)
       }
    };
 

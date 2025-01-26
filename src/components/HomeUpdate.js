@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import newsData from '../utils/newsData'
 import UpdateHomeCard from './UpdateHomeCard'
 import { Context } from '../Context/Context'
 
@@ -15,8 +14,8 @@ const HomeUpdate = () => {
          </div>
          <div className='my-2 sm:my-[80px] w-full'>
             <div className='flex w-full gap-[34px] items-center overflow-x-scroll no-scrollbar px-[40px]'>
-               {news?.slice(0, 4).map(news => (
-                  <UpdateHomeCard news={news} />
+               {news?.slice(0, 4).map((news,index) => (
+                  <UpdateHomeCard  key={index} news={news} />
                ))}
             </div>
          </div>

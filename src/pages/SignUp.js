@@ -5,8 +5,6 @@ import LawyerRegister from '../components/LawyerRegister'
 import axios from 'axios'
 import { preSignupRoute } from '../utils/APIRoutes'
 import { Lawyer } from "../utils/data";
-import { RotatingLines } from 'react-loader-spinner'
-import MessageLoading from '../components/MessageLoading'
 import { isAuth } from '../utils/Utils'
 const SignUp = () => {
    const { state } = useLocation()
@@ -31,7 +29,7 @@ const SignUp = () => {
       if (user) {
          navigate(`/profile/${user.username}`)
       }
-   }, [])
+   }, [navigate])
 
    const handleSubmit = async () => {
       setLoading(true)
@@ -53,6 +51,8 @@ const SignUp = () => {
          }
       } catch (err) {
          console.log(err)
+      } finally {
+         setLoading(false)
       }
    };
 

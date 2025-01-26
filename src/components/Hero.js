@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import React from "react";
 import { Link } from "react-router-dom"
-const { Heroimg } = require("../images/Hero-Wrapper__image--center.svg")
 export const Hero = () => {
-  const navigate = useNavigate()
-  const [role, setRole] = useState(null)
-  console.log(role)
+
   return (
 
     <div className="w-full flex flex-col justify-center items-center">

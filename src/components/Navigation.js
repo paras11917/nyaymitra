@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { acceptRequestRoute, logoutRoute, requestsRoute } from "../utils/APIRoutes";
+import { acceptRequestRoute, requestsRoute } from "../utils/APIRoutes";
 import axios from "axios";
-import { Link, NavLink, useLocation, useParams } from "react-router-dom"
+import { Link, NavLink, useLocation } from "react-router-dom"
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1, RxCross2 } from "react-icons/rx";
 import { isAuth, logout } from "../utils/Utils";
@@ -10,27 +10,23 @@ import { IoIosNotifications } from "react-icons/io";
 import { RiMessage3Fill } from "react-icons/ri";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { Context } from "../Context/Context";
-import { MdDelete } from "react-icons/md";
 
 const Navigation = () => {
-    const { userData, socket, token } = useContext(Context)
-    // console.log(userData, "userdata")
-    const [userID, setUserID] = useState(null);
+    const { token, userData } = useContext(Context)
     const navigate = useNavigate();
     const path = useLocation().pathname
     const [open, setOpen] = useState(false)
     const [openNot, setOpenNot] = useState(false)
-    const [popup, setPopup] = useState(false)
     const [openaccept, setOpenAccept] = useState(false)
-    const ref = useRef(null);
-    let menuRef = useRef();
     const [reqdata, setReqdata] = useState()
-    const [requests,setRequests] = useState([])
+    const [requests, setRequests] = useState([])
 
     const [loading, setLoading] = useState(false)
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+    const config = useMemo(() => {
+        return {
+            headers: { Authorization: `Bearer ${token}` }
+        }
+    }, [token])
 
     // useEffect(() => {
     //     let handler = (e) => {
@@ -46,6 +42,7 @@ const Navigation = () => {
 
     const fetchRequests = useCallback(async () => {
         try {
+            if(!token) return
             const response = await axios.get(requestsRoute, config)
             if (response) {
                 console.log(response.data)
@@ -54,11 +51,11 @@ const Navigation = () => {
         } catch (err) {
             console.log(err)
         }
-    }, [])
+    }, [config, token])
 
     useEffect(() => {
         fetchRequests()
-    }, [openNot])
+    }, [fetchRequests])
 
     const handleOpenAccept = (r) => {
         setReqdata(r)
@@ -68,7 +65,7 @@ const Navigation = () => {
         setOpenNot(false)
     }
 
-    const handleAccept = async () => {
+    const handleAccept = useCallback(async () => {
         setLoading(true)
         try {
             // socket.emit("request", {
@@ -77,21 +74,19 @@ const Navigation = () => {
             //     message: values.sub
             // });
 
-            const config = {
-                headers: { Authorization: `Bearer ${token}` }
-            };
-
-            const response = await axios.post(acceptRequestRoute, { userid: reqdata.sender._id ,reqid:reqdata._id}, config);
+            if (!token) return
+            const response = await axios.post(acceptRequestRoute, { userid: reqdata?.sender?._id, reqid: reqdata?._id }, config);
             if (response) {
                 setLoading(false)
                 setOpenAccept(false)
                 console.log(response)
             }
         } catch (err) {
-            setLoading(false)
             console.log(err)
+        } finally {
+            setLoading(false)
         }
-    };
+    },[config, reqdata?._id, reqdata?.sender?._id, token])
 
     return (
         <div className="w-full fixed flex flex-row items-center justify-between px-[10px] lg:px-[30px] py-[20px] backdrop-blur-xl z-[100]">
@@ -142,7 +137,7 @@ const Navigation = () => {
                         <Link to={"/chat"} className="text-[28px] relative"><RiMessage3Fill />
                             {true && <div className="w-2 h-2 absolute top-0 right-0 bg-[#F05454] rounded-full"></div>}
                         </Link>
-                        <NavLink to={`/profile/${isAuth().username}`} className="text-[20px]  items-center gap-2 hidden sm:flex"> <span className="text-[32px]"><IoPersonCircleSharp /></span> {isAuth().name} </NavLink>
+                        <NavLink to={`/profile/${userData?.username}`} className="text-[20px]  items-center gap-2 hidden sm:flex"> <span className="text-[32px]"><IoPersonCircleSharp /></span> {userData?.name} </NavLink>
                         <button className="h-10 bg-[#F05454] rounded-lg px-2 hidden md:block" onClick={logout}>Logout</button>
 
                     </div>
@@ -160,7 +155,7 @@ const Navigation = () => {
                     {/* <NavLink to={"/tracking"} className={`${path === "/tracking" ? "text-[#F05454] font-bold" : "text-[#dddddd]"} hover:text-[#F05454]   `}>Track</NavLink> */}
                     <NavLink className={`${path === "/" ? "text-[#F05454] font-bold" : "text-[#dddddd]"} hover:text-[#F05454]   `}>Profile</NavLink>
                     <NavLink className={`${path === "/" ? "text-[#F05454] font-bold" : "text-[#dddddd]"} hover:text-[#F05454]   `}>Contact us</NavLink>
-                    {isAuth() && <button className="h-10 bg-[#F05454] rounded-lg px-2 " onClick={logout}>Logout</button>}
+                    {isAuth() && <button className="h-10 bg-[#F05454] rounded-lg px-2 " onClick={() => { logout(); navigate("/"); }}>Logout</button>}
                 </div>
             )}
 

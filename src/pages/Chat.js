@@ -1,64 +1,55 @@
-import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
-import Lawyers from '../utils/indianLawyersData';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
-import { allLawyersRoute, getConnectionsRoute, getUserRoute, host, recieveMessageRoute, sendMessageRoute } from '../utils/APIRoutes';
+import {  getConnectionsRoute, recieveMessageRoute, sendMessageRoute } from '../utils/APIRoutes';
 import { useNavigate } from 'react-router';
 // import SimplePeer from 'simple-peer';
 import ReactPlayer from "react-player";
-import { CiImageOn } from "react-icons/ci";
 import { FaRupeeSign } from "react-icons/fa";
-
-import Stars from '../components/starRating';
-
 import { BiSend } from "react-icons/bi";
-import Connect from './Connect';
-import ConnectPopup from '../components/ConnectPopup';
-import { Context, useSocket } from '../Context/Context';
+import { Context } from '../Context/Context';
 import { isAuth } from '../utils/Utils';
-import { FaVideo, FaImage, FaRegFilePdf } from "react-icons/fa";
+import { FaVideo } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa6";
 import usePeer from '../Context/Peer';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RxCross2 } from 'react-icons/rx';
 
 const Chat = ({ lawyers, loggedInUser }) => {
-   const { peer, createOffer, createAnswer, closeConnection } = usePeer();
-   const { socket, userData, allUsers, token, connections, auth, showToastMessage } = useContext(Context);
-   const config = {
-      headers: { Authorization: `Bearer ${token}` }
-   };
-   const [currentChat, setCurrentChat] = useState(undefined);
+   const { peer, createAnswer } = usePeer();
+   const { socket, userData, token, auth, showToastMessage } = useContext(Context);
+   const [connections,setConnections] = useState([])
+   const [currentChat, setCurrentChat] = useState(null);
    const [myStream, setMyStream] = useState()
    const [remoteStream, setRemoteStream] = useState();
    const [videocallon, setVideocallon] = useState(false)
-   const [loading, setLoading] = useState(false)
-   const [prog, setProg] = useState("0")
+   // const [loading, setLoading] = useState(false)
+   // const [prog, setProg] = useState("0")
    const [msg, setMsg] = useState("");
-   const [type, setType] = useState(null);
-   const [link, setLink] = useState(null)
-   const scrollRef = useRef();
    const [messages, setMessages] = useState([]);
-   const [arrivalMessage, setArrivalMessage] = useState(null);
-   const [selectedChat, setSelectedChat] = useState(null);
-   const [input, setInput] = useState('');
-   // const [lawyers, setLawyers] = useState(null);
-   // const [user, setUser] = useState(null);
-   const videoRef = useRef();
-   const [stream, setStream] = useState(null);
-   const remoteVideoRef = useRef();
    const [openPay, setOpenPay] = useState(false)
    const navigate = useNavigate();
-   const [searchText, setSearchText] = useState('');
-   const [selectedFile, setSelectedFile] = useState(null);
-   // const [lawyers, setLawyers] = useState(null);
-   const [user, setUser] = useState(null);
 
    useEffect(() => {
       if (!isAuth()) {
          navigate("/")
       }
    })
+
+   const fetchConnections = useCallback(async () => {
+      try {
+         if (!token) return
+         const response = await axios.get(getConnectionsRoute, { headers: { Authorization: `Bearer ${token}` } })
+         if (response) {
+            setConnections(response.data.connections)
+         }
+      } catch (err) {
+         console.log(err)
+      }
+   }, [token])
+
+   useEffect(() => {
+      fetchConnections()
+   }, [fetchConnections])
 
    useEffect(() => {
       socket.emit("newUser", auth?._id);
@@ -118,26 +109,26 @@ const Chat = ({ lawyers, loggedInUser }) => {
    const handleNegoNeeded = useCallback(async () => {
       const offer = await peer.getOffer();
       socket.emit("peer:nego:needed", { offer, to: currentChat?._id });
-   }, [currentChat, socket]);
+   }, [currentChat?._id, peer, socket]);
 
    useEffect(() => {
       peer.addEventListener("negotiationneeded", handleNegoNeeded);
       return () => {
          peer.removeEventListener("negotiationneeded", handleNegoNeeded);
       };
-   }, [handleNegoNeeded]);
+   }, [handleNegoNeeded, peer]);
 
    const handleNegoNeedIncomming = useCallback(
       async ({ from, offer }) => {
          const ans = await peer.getAnswer(offer);
          socket.emit("peer:nego:done", { to: from, ans });
       },
-      [socket]
+      [peer, socket]
    );
 
    const handleNegoNeedFinal = useCallback(async ({ ans }) => {
       await peer.setLocalDescription(ans);
-   }, []);
+   }, [peer]);
 
    useEffect(() => {
       peer.addEventListener("track", async (ev) => {
@@ -145,7 +136,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
          console.log("GOT TRACKS!!");
          setRemoteStream(remoteStream[0]);
       });
-   }, []);
+   }, [peer]);
 
 
 
@@ -309,19 +300,19 @@ const Chat = ({ lawyers, loggedInUser }) => {
 
 
 
-   const fetchMessage = async () => {
+   const fetchMessage = useCallback(async () => {
       try {
-         const response = await axios.post(recieveMessageRoute, { currentChatId: currentChat?._id }, config);
+         const response = await axios.post(recieveMessageRoute, { currentChatId: currentChat?._id }, {headers: { Authorization: `Bearer ${token}` }});
          setMessages(response.data);
          console.log(response.data)
       } catch (err) {
          console.log(err)
       }
-   }
+   },[currentChat?._id, token])
 
    useEffect(() => {
       if(currentChat){fetchMessage();}
-   }, [currentChat]);
+   }, [currentChat, fetchMessage]);
 
 
    const handleSendMsg = async () => {
@@ -332,11 +323,13 @@ const Chat = ({ lawyers, loggedInUser }) => {
             message: msg
          });
 
-         const response = await axios.post(sendMessageRoute, { to: currentChat._id, message: msg }, config);
+         const response = await axios.post(sendMessageRoute, { to: currentChat._id, message: msg }, {headers: { Authorization: `Bearer ${token}` }});
 
-         fetchMessage();
+         if(response) fetchMessage();
       } catch (err) {
          console.log(err)
+      } finally {
+         setMsg("");
       }
    };
 
@@ -365,13 +358,22 @@ const Chat = ({ lawyers, loggedInUser }) => {
 
    useEffect(() => {
       if (socket) {
-         socket.on("msg-recieve", (message) => {
-            console.log(message)
-            showToastMessage(message)
-            fetchMessage()
-         });
+         const handleMessage = (message) => {
+            console.log(message);
+            showToastMessage(message);
+            fetchMessage();
+         };
+
+         // Attach the event listener
+         socket.on("msg-recieve", handleMessage);
+
+         // Cleanup function to prevent duplicate listeners
+         return () => {
+            socket.off("msg-recieve", handleMessage);
+         };
       }
-   });
+   }, [fetchMessage, showToastMessage, socket]); // Add socket as a dependency
+
 
    // useEffect(() => {
    //    if (socket) {
@@ -397,68 +399,61 @@ const Chat = ({ lawyers, loggedInUser }) => {
 
 
 
-   const sendChat = async () => {
+   const sendChat = async (e) => {
+      e.preventDefault()
       // if (msg.length > 0) {
       handleSendMsg();
-      //    setMsg("");
+         
       // }
       // if (link) {
       //    handleSendFile();
       // }
    }
 
-   const handleRequestPay = ()=>{
-
-   }
-
-   
-
    return (
       <div className='w-full h-[100vh] flex pt-[80px]'>
 
          <div className="w-[25%]">
-            {/* <div className='text-[20px] text-center font-bold m-4'>Connected Users</div> */}
+            <div className='text-[20px] text-center font-bold m-4'>Connected Users</div>
             <div className='h-full w-full overflow-y-scroll no-scrollbar px-5 pb-4 z-[-3]'>
                <div className='flex flex-col gap-4 h-full'>
-
-
                   {connections?.map((person) => (
-                     <div key={person._id} className='flex justify-between items-center rounded-[12px] p-3 w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-xl' >
+                     <button onClick={() => setCurrentChat(person)} key={person._id} className='flex justify-between items-center rounded-[12px] p-3 w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-xl' >
                         <div className="flex  items-center">
                            <div className="w-[34px] h-[34px] object-cover rounded-full mr-4">
-                              <img src={require("../images/download.png")} alt={'#'} className="w-full h-full rounded-full" />
+                              <img src={person.image || require("../images/download.png")} alt={'#'} className="w-full h-full rounded-full" />
                            </div>
                            <div className="text-[18px]">{person.name}</div>
                         </div>
-                        <div className="text-[#F05454] text-[28px]" onClick={() => setCurrentChat(person)}>
+                        <div className="text-[#F05454] text-[28px]" >
                            <BiSend />
                         </div>
-                     </div>
+                     </button>
                   ))}
                </div>
             </div>
          </div>
 
 
-         <div className=" w-[75%] backdrop-blur-xl px-2 ">
-            {true ? (
+         <div className=" w-[75%] backdrop-blur-xl ">
+            {currentChat ? (
                <div className="flex flex-col justify-between h-full  ">
-                  <div className="flex justify-between py-2 mb-2">
-                     <div>
+                  <div className="flex justify-between p-2 mb-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                     <div className='flex gap-4'>
                         <div className="w-[50px] h-[50px] object-cover rounded-full mr-4">
-                           <img src={require("../images/download.png")} alt={'#'} className="w-full h-full rounded-full" />
+                           <img src={currentChat?.image ||require("../images/download.png")} alt={'#'} className="w-full h-full rounded-full" />
                         </div>
-                        <div className='user-connected-name'><span className="user-name-chat">{currentChat?.name}</span></div>
+                        <div className='text-2xl'>{currentChat?.name}</div>
                      </div>
                      <div className="call-buttons flex text-[24px] mr-[50px] gap-[20px]">
-                        <button onClick={()=>setOpenPay(true)}><FaRupeeSign/></button>
+                        {/* <button onClick={()=>setOpenPay(true)}><FaRupeeSign/></button>
                         <button onClick={handleCallUser} className="call-button cursor-pointer circular"><FaVideo /></button>
-                        <button onClick={() => { }} className="call-button circular"><FaPhone /></button>
+                        <button onClick={() => { }} className="call-button circular"><FaPhone /></button> */}
                      </div>
                   </div>
 
                   <div className='overflow-y-scroll h-full '>
-                     <div className="flex flex-col gap-3 ">
+                     <div className="flex flex-col gap-3 w-full">
                         {/* <div className={` w-fit max-w-[200px] self-start received rounded-[12px] p-1 bg-[#30475E]`}
                         >sgno dkgsns sgnasgk snglsdng </div>
                         <div className={`message w-fit max-w-[200px] sent self-end rounded-[12px] p-1 bg-[#F05454]`} >sgno dkgsns sgnasgk snglsdng </div>
@@ -471,7 +466,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
                         {messages?.map((message, index) => (
                            <div
                               key={index}
-                              className={`message w-fit rounded-[12px] p-2 px-3 max-w-[200px]  text-end ${message.fromSelf ? 'sent self-end bg-[#F05454]' : 'received bg-[#30475E]'}`}
+                              className={`flex w-full rounded-[12px] p-2 px-3 max-w-[200px]  text-end ${message.fromSelf ? 'justify-start sent self-end bg-[#F05454]' : 'justify-start received bg-[#30475E]'}`}
                            >
                               {message.file ?
                                  <>
@@ -488,7 +483,7 @@ const Chat = ({ lawyers, loggedInUser }) => {
                      </div>
                   </div>
                   {/* Chat Input */}
-                  <div className="flex w-full gap-4 p-4">
+                  <form onSubmit={(e)=>sendChat(e)} className="flex w-full gap-4 p-4">
                      <input
                         className='w-full p-4 bg-[#30475E] rounded-[12px]'
                         type="text"
@@ -510,10 +505,10 @@ const Chat = ({ lawyers, loggedInUser }) => {
                         hidden
                         id='pdf'
                      />
-                     <button className="doc-button text-[24px]" onClick={() => document.getElementById('pdf').click()}><FaRegFilePdf /></button>
-                     <button className="doc-button text-[24px]" onClick={() => document.getElementById('img').click()}><FaImage /></button>
-                     <button onClick={sendChat} className="send-button text-[#F05454] text-[38px]" disabled={loading} >{loading ? prog : <BiSend />}</button>
-                  </div>
+                     {/* <button className="doc-button text-[24px]" onClick={() => document.getElementById('pdf').click()}><FaRegFilePdf /></button>
+                     <button className="doc-button text-[24px]" onClick={() => document.getElementById('img').click()}><FaImage /></button> */}
+                     <button type='submit' className="send-button text-[#F05454] text-[38px]"  > <BiSend /></button>
+                  </form>
 
                   {videocallon && <div className='h-screen w-screen absolute bg-slate-900 flex gap-3'>
                      {myStream && <button onClick={()=>{}}>Send Stream</button>}
@@ -554,22 +549,16 @@ const Chat = ({ lawyers, loggedInUser }) => {
                         <input type="text" placeholder='currency' />
                         <input type="text" placeholder='note' />
 
-                        <button className="h-10 bg-[#F05454] rounded-lg" onClick={handleRequestPay}>Request Payment</button>
+                        <button className="h-10 bg-[#F05454] rounded-lg" >Request Payment</button>
                      </div>
                   </div>}
                </div>
             ) :
-               <div className='text-center mt-[100px]'>Select user to chat</div>
+               <div className='text-center mt-[100px]'>Select Connected user to chat</div>
             }
          </div >
       </div>
    );
 };
 
-
 export default Chat;
-
-
-
-
-
